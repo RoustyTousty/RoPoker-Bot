@@ -1,5 +1,4 @@
 const fs = require('fs');
-const { connection } = require('mongoose');
 
 module.exports = (client) => {
     client.handleEvents = async () => {
@@ -9,8 +8,6 @@ module.exports = (client) => {
 
             for (const file of eventFiles) {
                 const event = require(`../../events/${folder}/${file}`);
-                console.log(`Loading event file: ${file}`);
-                console.log(`Event content:`, event);
 
                 if (!event.name) {
                     console.error(`Error: ${file} does not have a 'name' property`);

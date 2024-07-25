@@ -7,14 +7,11 @@ module.exports = (client) => {
     client.handleCommands = async () => {
 
         const commandFiles = fs.readdirSync(`./commands`).filter(file => file.endsWith('.js'));
-        console.log("Command Files: ", commandFiles); // Log the command files found
 
         for (const file of commandFiles) {
             const command = require(`../../commands/${file}`);
-            console.log("Loading Command: ", command); // Log each command being loaded
 
             if (!command.data || !command.data.name) {
-                console.error(`Error: ${file} does not have a 'data.name' property`);
                 continue;
             }
 

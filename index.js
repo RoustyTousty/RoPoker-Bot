@@ -1,8 +1,8 @@
 require('dotenv').config()
 const { Client, Collection, GatewayIntentBits, Partials } = require('discord.js');
 const fs = require('fs');
-const { connect } = require('mongoose');
-const giveawayModel = require("./schemas/giveaway");
+// const { connect } = require('mongoose');
+// const giveawayModel = require("./schemas/giveaway");
 const { GiveawaysManager } = require('discord-giveaways');
 
 const client = new Client({
@@ -77,7 +77,6 @@ const functionFolders = fs.readdirSync(`./functions`);
 for (const folder of functionFolders) {
     const functionFiles = fs.readdirSync(`./functions/${folder}`).filter(file => file.endsWith('.js'));
     for (const file of functionFiles) {
-        console.log(`Loading function file: ./functions/${folder}/${file}`);
         const func = require(`./functions/${folder}/${file}`);
         if (typeof func !== 'function') {
             console.error(`Error: ${file} does not export a function`);
