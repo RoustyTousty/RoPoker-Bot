@@ -83,8 +83,9 @@ for (const folder of functionFolders) {
 
 client.handleEvents();
 client.handleCommands();
-client.login(process.env.CLOB_TOKEN);
+client.login("MTI2NTcyMDY2ODY5NjM1MDc5Mw.GVdDAI.TViGuoQY5I-zjQfknriUfRa3aEvJMZdOPnSaGc");
+// client.login(process.env.CLOB_TOKEN);
 
-(async () => {
-  await connect(process.env.clobDBString).catch(console.error);
-})();
+// (async () => {
+//   await connect(process.env.clobDBString).catch(console.error);
+// })();
