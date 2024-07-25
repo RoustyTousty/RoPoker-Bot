@@ -33,52 +33,58 @@ process.on('uncaughtException', (err) => {
   console.log(err)
 });
 
-const GiveawayManagerWithOwnDatabase = class extends GiveawaysManager {
-  async getAllGiveaways() {
-    return await giveawayModel.find().lean().exec();
-  }
+// const GiveawayManagerWithOwnDatabase = class extends GiveawaysManager {
+//   async getAllGiveaways() {
+//     return await giveawayModel.find().lean().exec();
+//   }
 
-  async saveGiveaway(messageId, giveawayData) {
-    await giveawayModel.create(giveawayData);
-    return true;
-  }
+//   async saveGiveaway(messageId, giveawayData) {
+//     await giveawayModel.create(giveawayData);
+//     return true;
+//   }
 
-  async editGiveaway(messageId, giveawayData) {
-    await giveawayModel
-      .updateOne({ messageId }, giveawayData, { omitUndefined: true })
-      .exec();
-    return true;
-  }
+//   async editGiveaway(messageId, giveawayData) {
+//     await giveawayModel
+//       .updateOne({ messageId }, giveawayData, { omitUndefined: true })
+//       .exec();
+//     return true;
+//   }
 
-  async deleteGiveaway(messageId) {
-    await giveawayModel.deleteOne({ messageId }).exec();
-    return true;
-  }
-};
+//   async deleteGiveaway(messageId) {
+//     await giveawayModel.deleteOne({ messageId }).exec();
+//     return true;
+//   }
+// };
 
-const manager = new GiveawayManagerWithOwnDatabase(client, {
-  default: {
-    botsCanWin: false,
-    embedColor: "#4CCDEA",
-    embedColorEnd: "#4CCDEA",
-    embedFooter: "ClobNet Giveaway",
-    lastChance: {
-      enabled: false,
-    },
-  },
-});
+// const manager = new GiveawayManagerWithOwnDatabase(client, {
+//   default: {
+//     botsCanWin: false,
+//     embedColor: "#4CCDEA",
+//     embedColorEnd: "#4CCDEA",
+//     embedFooter: "ClobNet Giveaway",
+//     lastChance: {
+//       enabled: false,
+//     },
+//   },
+// });
 
 client.messageCounts = new Map();
-client.giveawaysManager = manager;
+// client.giveawaysManager = manager;
 client.commands = new Collection();
 client.commandArray = [];
 
 const functionFolders = fs.readdirSync(`./functions`);
 for (const folder of functionFolders) {
-  const functionFiles = fs.readdirSync(`./functions/${folder}`).filter(file => file.endsWith('js'));
-  for (const file of functionFiles) {
-    require(`./functions/${folder}/${file}`)(client);
-  }
+    const functionFiles = fs.readdirSync(`./functions/${folder}`).filter(file => file.endsWith('.js'));
+    for (const file of functionFiles) {
+        console.log(`Loading function file: ./functions/${folder}/${file}`);
+        const func = require(`./functions/${folder}/${file}`);
+        if (typeof func !== 'function') {
+            console.error(`Error: ${file} does not export a function`);
+        } else {
+            func(client);
+        }
+    }
 }
 
 client.handleEvents();
