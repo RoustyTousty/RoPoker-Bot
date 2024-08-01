@@ -1,4 +1,4 @@
-const { Client, Collection, Partials } = require("discord.js");
+const { Client, Collection, Partials, GatewayIntentBits } = require("discord.js");
 const CommandsHandler = require("./handler/CommandsHandler");
 const { warn, error, info, success } = require("../utils/Console");
 const config = require("../config");
@@ -23,10 +23,16 @@ class DiscordBot extends Client {
     login_attempts = 0;
     login_timestamp = 0;
     statusMessages = [
-        { name: 'Playing RoPoker ♣️', type: 4 },
-        { name: 'Playing RoPoker ♥️', type: 4 },
-        { name: 'Playing RoPoker ♠️', type: 4 },
-        { name: 'Playing RoPoker ♦️', type: 4 }
+        { name: 'Royal flush', type: 4 },
+        { name: 'Straight flush', type: 4 },
+        { name: 'Four of a kind', type: 4 },
+        { name: 'Full house', type: 4 },
+        { name: 'Flush', type: 4 },
+        { name: 'Straight', type: 4 },
+        { name: 'Three of a kind', type: 4 },
+        { name: 'Two pair', type: 4 },
+        { name: 'One pair', type: 4 },
+        { name: 'High card', type: 4 },
     ];
 
     commands_handler = new CommandsHandler(this);
@@ -35,7 +41,14 @@ class DiscordBot extends Client {
 
     constructor() {
         super({
-            intents: 3276799,
+            intents: [
+                GatewayIntentBits.Guilds,
+                GatewayIntentBits.GuildMessages,
+                GatewayIntentBits.MessageContent,
+                GatewayIntentBits.GuildMessageReactions,
+                GatewayIntentBits.GuildMembers,
+                GatewayIntentBits.DirectMessages
+            ],
             partials: [
                 Partials.Channel,
                 Partials.GuildMember,
@@ -47,7 +60,7 @@ class DiscordBot extends Client {
                 activities: [{
                     name: 'keep this empty',
                     type: 4,
-                    state: 'Loading RoPoker Bot'
+                    state: 'Loading...'
                 }]
             }
         });

@@ -15,7 +15,7 @@ module.exports = new ApplicationCommand({
         }]
     },
     options: {
-        botDevelopers: true
+        botOwner: true
     },
     /**
      * 
@@ -23,18 +23,18 @@ module.exports = new ApplicationCommand({
      * @param {ChatInputCommandInteraction} interaction 
      */
     run: async (client, interaction) => {
-        await interaction.deferReply();
 
         const ammount = interaction.options.getInteger('ammount', true);
         const channel = interaction.channel
 
         try {
             let messages = await channel.messages.fetch({ limit: ammount + 1 });
-            // messages = messages.sort((a, b) => a.createdTimestamp - b.createdTimestamp);
     
             messages.forEach(message => {
                 message.delete()
             });
+
+            await interaction.reply('Hey it worked')
         } catch (error) {
             console.error('Error fetching messages:', error);
         }
